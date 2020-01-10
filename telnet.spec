@@ -1,7 +1,7 @@
 Summary: The client program for the Telnet remote login protocol
 Name: telnet
 Version: 0.17
-Release: 47%{?dist}.1
+Release: 48%{?dist}
 Epoch: 1
 License: BSD
 Group: Applications/Internet
@@ -28,6 +28,8 @@ Patch21: telnet-0.17-errno_test_sys_bsd.patch
 Patch22: netkit-telnet-0.17-reallynodns.patch
 Patch23: telnet-rh678324.patch
 Patch24: netkit-telnet-0.17-set-utmp-entry.patch
+Patch25: telnet-rh704604.patch
+Patch26: telnet-rh825946.patch
 
 BuildRequires: ncurses-devel
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -73,6 +75,8 @@ mv telnet telnet-NETKIT
 %patch22 -p1 -b .reallynodns
 %patch23 -p1 -b .rh678324
 %patch24 -p1 -b .rh748705
+%patch25 -p1 -b .rh704604
+%patch26 -p1 -b .rh825946
 
 %build
 %ifarch s390 s390x
@@ -131,8 +135,10 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_mandir}/man8/telnetd.8*
 
 %changelog
-* Mon Sep 24 2012 Adam Tkac <atkac redhat com> 1:0.17-47.1
+* Mon May 05 2014 Michal Sekletar <msekleta@redhat.com> 1:0.17-48
 - reuse utmp entries correctly
+- break out from infinite loop if we tried to bind to non-existing address (#772912)
+- mitigate possibility of self-deadlock while updating utmp or wtmp (#832059)
 
 * Tue Jun 28 2011 Adam Tkac <atkac redhat com> 1:0.17-47
 - telnetd: store "from" address in sockaddr_storage (#678324)

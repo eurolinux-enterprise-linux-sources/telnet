@@ -1,0 +1,63 @@
+--- netkit-telnet-0.17/telnetd/sys_term.c.set-utmp	2009-03-03 15:13:39.000000000 +0000
++++ netkit-telnet-0.17/telnetd/sys_term.c	2009-03-03 15:13:54.000000000 +0000
+@@ -549,6 +549,52 @@
+     return 0;
+ }
+ 
++/* update_utmp - update our utmp entry */
++static void update_utmp(const char *host, char *tty)
++{
++    struct  utmp ut;
++    struct  utmp *utp;
++    time_t  t;
++    int     mypid = getpid();
++    char   *ttyp;
++
++    ttyp = strrchr (tty, '/') ;
++    if (ttyp)
++       ttyp++;                 /* Skip the trailing "/" */
++    else
++       ttyp = tty + 5;         /* Skip the "/dev/"  */
++
++    utmpname(_PATH_UTMP);
++    setutent();
++    while ((utp = getutent()))
++	    if (utp->ut_pid == mypid
++		&& utp->ut_type >= INIT_PROCESS
++		&& utp->ut_type <= DEAD_PROCESS)
++		    break;
++
++    if (utp) {
++	memcpy(&ut, utp, sizeof(ut));
++    } else {
++	/* some inits don't initialize utmp... */
++	memset(&ut, 0, sizeof(ut));
++	strncpy(ut.ut_id, ttyp, sizeof(ut.ut_id));
++    }
++    /* endutent(); */
++    strcpy(ut.ut_user, "LOGIN");
++    strncpy(ut.ut_line, line, sizeof(ut.ut_line));
++    if (host)
++            strncpy(ut.ut_host, host, sizeof(ut.ut_host));
++    time(&t);
++    ut.ut_time = t;
++    ut.ut_type = LOGIN_PROCESS;
++    ut.ut_pid = mypid;
++
++    setutent();
++    pututline(&ut);
++    endutent();
++}
++
++
+ /*
+  * startslave(host)
+  *
+@@ -579,6 +625,7 @@
+ 	/* child */
+ 	signal(SIGHUP,SIG_IGN);
+ 	getptyslave();
++	update_utmp(host, line);
+ 	start_login(host, autologin, autoname);
+ 	/*NOTREACHED*/
+     }

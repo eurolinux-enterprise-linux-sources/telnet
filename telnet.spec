@@ -3,7 +3,7 @@
 Summary: The client program for the Telnet remote login protocol
 Name: telnet
 Version: 0.17
-Release: 64%{?dist}
+Release: 60%{?dist}
 Epoch: 1
 License: BSD
 Group: Applications/Internet
@@ -36,8 +36,6 @@ Patch24: telnet-rh674942.patch
 Patch25: telnet-rh704604.patch
 Patch26: telnet-rh825946.patch
 Patch27: telnet-log-address.patch
-Patch28: telnet-0.17-force-ipv6-ipv4.patch
-Patch29: netkit-telnet-0.17-manpage.patch
 
 BuildRequires: ncurses-devel systemd
 
@@ -88,8 +86,6 @@ mv telnet telnet-NETKIT
 %patch25 -p1 -b .rh704604
 %patch26 -p1 -b .rh825946
 %patch27 -p1 -b .rh1323094
-%patch28 -p1 -b .ipv6-support
-%patch29 -p1 -b .manpage
 
 %build
 %ifarch s390 s390x
@@ -155,20 +151,6 @@ install -p -m644 %SOURCE6 ${RPM_BUILD_ROOT}%{_unitdir}/telnet.socket
 %{_mandir}/man8/telnetd.8*
 
 %changelog
-* Wed Apr 19 2017 Michal Ruprich - 1:0.17-64
-- Related: #1367415 - No option to specify IPv6 or IPv4 explicitly must be used
-                    - more clear formulation of man page note - previous note was a bit ambiguous
-
-* Wed Apr 19 2017 Michal Ruprich <mruprich@redhat.com> - 1:0.17-63
-- Related: #1367415 - No option to specify IPv6 or IPv4 explicitly must be used
-                    - additional info added to manpage
-
-* Mon Jan 23 2017 Michal Ruprich <mruprich@redhat.com> - 1:0.17-62
-- Related: #1367415 - No option to specify IPv6 or IPv4 explicitly must be used
-
-* Wed Jan 18 2017 Michal Ruprich <mruprich@redhat.com> - 1:0.17-61
-- Resolves: #1367415 - No option to specify IPv6 or IPv4 explicitly must be used
-
 * Fri Jul 01 2016 Martin Sehnoutka <msehnout@redhat.com> - 1:0.17-60
 - Introduce new -i switch
 - ip addresses will be logged into utmp instead of hostname

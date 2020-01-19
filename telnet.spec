@@ -3,7 +3,7 @@
 Summary: The client program for the Telnet remote login protocol
 Name: telnet
 Version: 0.17
-Release: 57%{?dist}
+Release: 59%{?dist}
 Epoch: 1
 License: BSD
 Group: Applications/Internet
@@ -149,6 +149,12 @@ install -p -m644 %SOURCE6 ${RPM_BUILD_ROOT}%{_unitdir}/telnet.socket
 %{_mandir}/man8/telnetd.8*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1:0.17-59
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1:0.17-58
+- Mass rebuild 2013-12-27
+
 * Wed Jul 17 2013 Michal Sekletar <msekleta@redhat.com> - 1:0.17-57
 - enable hardened build
 - fix dates in changelog

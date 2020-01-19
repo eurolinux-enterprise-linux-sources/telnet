@@ -3,7 +3,7 @@
 Summary: The client program for the Telnet remote login protocol
 Name: telnet
 Version: 0.17
-Release: 60%{?dist}
+Release: 57%{?dist}
 Epoch: 1
 License: BSD
 Group: Applications/Internet
@@ -35,7 +35,6 @@ Patch23: telnet-rh678324.patch
 Patch24: telnet-rh674942.patch
 Patch25: telnet-rh704604.patch
 Patch26: telnet-rh825946.patch
-Patch27: telnet-log-address.patch
 
 BuildRequires: ncurses-devel systemd
 
@@ -85,7 +84,6 @@ mv telnet telnet-NETKIT
 %patch24 -p1 -b .rh674942
 %patch25 -p1 -b .rh704604
 %patch26 -p1 -b .rh825946
-%patch27 -p1 -b .rh1323094
 
 %build
 %ifarch s390 s390x
@@ -151,17 +149,6 @@ install -p -m644 %SOURCE6 ${RPM_BUILD_ROOT}%{_unitdir}/telnet.socket
 %{_mandir}/man8/telnetd.8*
 
 %changelog
-* Fri Jul 01 2016 Martin Sehnoutka <msehnout@redhat.com> - 1:0.17-60
-- Introduce new -i switch
-- ip addresses will be logged into utmp instead of hostname
-- Resolves: #1323094
-
-* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 1:0.17-59
-- Mass rebuild 2014-01-24
-
-* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 1:0.17-58
-- Mass rebuild 2013-12-27
-
 * Wed Jul 17 2013 Michal Sekletar <msekleta@redhat.com> - 1:0.17-57
 - enable hardened build
 - fix dates in changelog
